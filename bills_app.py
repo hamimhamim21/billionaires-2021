@@ -26,6 +26,8 @@ CORS(app)
 #################################################
 # Use PyMongo to establish Mongo connection for database mars_app
 #################################################
+# MONGODB_URI = "mongodb+srv://gigi7android:1qazxcvbnM@cluster0.vceyj.mongodb.net/billionaires_app?retryWrites=true&w=majority"
+
 # mongo = PyMongo(app, uri="mongodb://localhost:27017/billionaires_app")
 
 mongo = PyMongo(app, uri=MONGODB_URI)
@@ -47,7 +49,7 @@ def home():
 
 
 #################################################
-# Route to another page
+# Route to other html pages
 #################################################
 @app.route("/leaflet")
 def leaflet():
@@ -68,6 +70,18 @@ def aboutUs():
 @app.route("/billionaire_profile")
 def profile():
     return(render_template("billionaires_profile.html"))
+
+@app.route("/map_age")
+def map_age():
+    return(render_template("density_map_age.html"))
+
+@app.route("/net_worth")
+def map_networth():
+    return(render_template("billionaires_netWorth.html"))
+
+@app.route("/top_ten_countries")
+def top_ten():
+    return(render_template("top_10_countries.html"))
 
 #################################################
 
@@ -96,8 +110,6 @@ def scrape():
     # Load the data that just had been scrapped to the database
     mongo.db.forbes_data.update_one({}, {"$set": bills_data}, upsert=True)
    
-    print(f"\n\n---------------------------------->mongo DB calling ....\n\n\n")
-
     # Return to the homepage
     return redirect("/")
 #################################################

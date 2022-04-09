@@ -1,1 +1,1 @@
-web: gunicorn billionaires_app:app
+web: gunicorn wsgi:app
