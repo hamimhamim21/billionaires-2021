@@ -2,7 +2,7 @@
 # Import/ call dependencies and Setup
 #################################################
 from splinter import Browser
-from bs4 import BeautifulSoup as soup
+import BeautifulSoup as soup
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 
