@@ -15,7 +15,7 @@ import datetime as dt
 import json
 import numpy as np
 import humanize
-import requests
+import time
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -26,8 +26,9 @@ def winners(browser):
 
     # Set url and browser visit the site
     url = "https://www.forbes.com/real-time-billionaires"
-    browser.visit(url)
-    html = browser.html
+    browser.get(url)
+    time.sleep(5)
+    html = browser.page_source
     bs  = soup(html, 'html.parser')
 
     # Add try/except for error handling
@@ -84,8 +85,9 @@ def losers(browser):
 
     # Set url and browser visit the site
     url = "https://www.forbes.com/real-time-billionaires"
-    browser.visit(url)
-    html = browser.html
+    browser.get(url)
+    time.sleep(5)
+    html = browser.page_source
     bs  = soup(html, 'html.parser')
 
     # Add try/except for error handling
@@ -203,8 +205,26 @@ def all_bills():
 def scrape():
    
     # Set the executable path and initialize Splinter
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
     executable_path = {'executable_path': ChromeDriverManager().install()}
-    browser = Browser('chrome', **executable_path, headless=False)
+
+    # options = webdriver.ChromeOptions()
+    chrome_options.add_argument("start-maximized")
+    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+    # driver = webdriver.Chrome(options=options, executable_path='chromedriver.exe')
+    
+    # browser = Browser('chrome', **executable_path, headless=False)
+    browser = webdriver.Chrome(executable_path='C:\chromedriver.exe', chrome_options=chrome_options)
+    browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+    browser.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                                                                        'AppleWebKit/537.36 (KHTML, like Gecko) '
+                                                                        'Chrome/85.0.4183.102 Safari/537.36'})
+
 
     # Run all the scraping functions and store results in the dictionary
     data = {
