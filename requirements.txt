@@ -8,6 +8,7 @@ Flask-SQLAlchemy==2.5.1
 flask-pymongo == 2.3.0
 greenlet==1.1.2
 gunicorn==20.1.0
+humanize
 importlib-metadata==4.11.3
 itsdangerous==2.1.1
 Jinja2==3.0.3
