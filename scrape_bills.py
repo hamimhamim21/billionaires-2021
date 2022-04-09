@@ -16,6 +16,7 @@ import json
 import numpy as np
 import humanize
 import time
+import os
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -210,6 +211,8 @@ def scrape():
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
     executable_path = {'executable_path': ChromeDriverManager().install()}
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+
 
     # options = webdriver.ChromeOptions()
     chrome_options.add_argument("start-maximized")
@@ -219,7 +222,8 @@ def scrape():
     # driver = webdriver.Chrome(options=options, executable_path='chromedriver.exe')
     
     # browser = Browser('chrome', **executable_path, headless=False)
-    browser = webdriver.Chrome(executable_path='C:\chromedriver.exe', chrome_options=chrome_options)
+    # browser = webdriver.Chrome(executable_path='C:\chromedriver.exe', chrome_options=chrome_options)
+    browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
     browser.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                                                                         'AppleWebKit/537.36 (KHTML, like Gecko) '
